@@ -1,24 +1,26 @@
 import axios from "axios";
+import { API_BASE_URL } from "../constants";
 
-const API_URL = "http://localhost:8080/api/auth/";
+const API_URL = API_BASE_URL+'/auth'
 
 const register = (username, email, password) => {
-  return axios.post(API_URL + "signup", {
+  console.log(API_BASE_URL + "/signup")
+  return axios.post(API_URL + "/signup", {
     username,
     email,
     password,
   });
 };
 
-const login = (username, password) => {
+const login = (email, password) => {
   return axios
-    .post(API_URL + "signin", {
-      username,
+    .post(API_URL + "/login", {
+      email,
       password,
     })
     .then((response) => {
       if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("ACCESS_TOKEN", JSON.stringify(response.data));
       }
 
       return response.data;
@@ -26,7 +28,7 @@ const login = (username, password) => {
 };
 
 const logout = () => {
-  localStorage.removeItem("user");
+  localStorage.removeItem("ACCESS_TOKEN");
 };
 
 const authService = {

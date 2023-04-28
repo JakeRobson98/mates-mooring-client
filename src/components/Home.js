@@ -1,31 +1,28 @@
 import React, { useState, useEffect } from "react";
-
-import UserService from "../services/user.service";
-
+import { useDispatch, useSelector } from "react-redux";
+import { clearMessage } from "../slices/message";
+import { getAllListings } from "../slices/listings"
+import MyTable from "./common/Table";
+import MyMap from "./common/Map";
 const Home = () => {
-  const [content, setContent] = useState("");
+
+  const { listings } = useSelector((state) => state.listings);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    UserService.getPublicContent().then(
-      (response) => {
-        setContent(response.data);
-      },
-      (error) => {
-        const _content =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
-
-        setContent(_content);
-      }
-    );
-  }, []);
+    dispatch(clearMessage());
+    dispatch(getAllListings())
+  }, [dispatch]);
 
   return (
     <div className="container">
       <header className="jumbotron">
-        <h3>{content}</h3>
+        <MyMap></MyMap>
       </header>
+      <header className="jumbotron">
+        <MyTable data={listings}></MyTable>
+      </header>
+
     </div>
   );
 };
