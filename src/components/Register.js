@@ -17,16 +17,16 @@ const Register = () => {
   }, [dispatch]);
 
   const initialValues = {
-    username: "",
+    name: "",
     email: "",
     password: "",
   };
 
   const validationSchema = Yup.object().shape({
-    username: Yup.string()
+    name: Yup.string()
       .test(
         "len",
-        "The username must be between 3 and 20 characters.",
+        "The name must be between 3 and 20 characters.",
         (val) =>
           val &&
           val.toString().length >= 3 &&
@@ -49,11 +49,11 @@ const Register = () => {
   });
 
   const handleRegister = (formValue) => {
-    const { username, email, password } = formValue;
+    const { name, email, password } = formValue;
 
     setSuccessful(false);
 
-    dispatch(register({ username, email, password }))
+    dispatch(register({ name, email, password }))
       .unwrap()
       .then(() => {
         setSuccessful(true);
@@ -80,10 +80,10 @@ const Register = () => {
             {!successful && (
               <div>
                 <div className="form-group">
-                  <label htmlFor="username">Username</label>
-                  <Field name="username" type="text" className="form-control" />
+                  <label htmlFor="name">name</label>
+                  <Field name="name" type="text" className="form-control" />
                   <ErrorMessage
-                    name="username"
+                    name="name"
                     component="div"
                     className="alert alert-danger"
                   />

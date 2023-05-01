@@ -7,9 +7,9 @@ const ACCESS_TOKEN = JSON.parse(localStorage.getItem("ACCESS_TOKEN"));
 
 export const register = createAsyncThunk(
   "auth/register",
-  async ({ username, email, password }, thunkAPI) => {
+  async ({ name, email, password }, thunkAPI) => {
     try {
-      const response = await AuthService.register(username, email, password);
+      const response = await AuthService.register(name, email, password);
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } catch (error) {

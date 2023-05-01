@@ -12,6 +12,7 @@ import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
+import NewListing from "./components/NewListing";
 import * as mapboxgl from 'mapbox-gl';
 
 import { logout } from "./slices/auth";
@@ -35,6 +36,7 @@ const App = () => {
             <Route path="/user" element={<BoardUser />} />
             <Route path="/mod" element={<BoardModerator />} />
             <Route path="/admin" element={<BoardAdmin />} />
+            <Route path="/newListing" element={<NewListing />} />
           </Routes>
         </div>
     </Router>

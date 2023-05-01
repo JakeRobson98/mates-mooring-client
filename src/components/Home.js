@@ -17,7 +17,7 @@ const Home = () => {
   return (
     <div className="container">
       <header className="jumbotron">
-        <MyMap></MyMap>
+        <MyMap viewMap={true} markers={listings}></MyMap>
       </header>
       <header className="jumbotron">
         <MyTable data={listings}></MyTable>

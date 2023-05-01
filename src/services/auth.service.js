@@ -3,10 +3,10 @@ import { API_BASE_URL } from "../constants";
 
 const API_URL = API_BASE_URL+'/auth'
 
-const register = (username, email, password) => {
+const register = (name, email, password) => {
   console.log(API_BASE_URL + "/signup")
   return axios.post(API_URL + "/signup", {
-    username,
+    name,
     email,
     password,
   });

@@ -20,6 +20,26 @@ export const getAllListings = createAsyncThunk(
     }
 );
 
+export const newListing = createAsyncThunk(
+  "listings/newListing",
+  async (data, thunkAPI) => {
+    try {
+      console.log(data)
+      const response = await ListingService.newListing(data)
+      return response;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+
 const initialState ={
     listings : [],
     loading : false,
