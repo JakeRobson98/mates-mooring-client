@@ -14,13 +14,19 @@ const Home = () => {
     dispatch(getAllListings())
   }, [dispatch]);
 
+  const [selectedMarker, setSelectedMarker] = React.useState(null)
+
+  const handleSelectedMakrer = (mooring) =>{
+    setSelectedMarker(mooring)
+  }
+
   return (
     <div className="container">
       <header className="jumbotron">
-        <MyMap viewMap={true} markers={listings}></MyMap>
+        <MyMap viewMap={true} markers={listings} handleSelectedMarker={handleSelectedMakrer} selectedMarker={selectedMarker}></MyMap>
       </header>
       <header className="jumbotron">
-        <MyTable data={listings}></MyTable>
+        <MyTable data={[selectedMarker]}></MyTable>
       </header>
 
     </div>

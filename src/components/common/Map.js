@@ -8,71 +8,80 @@ import { useEffect, useRef } from 'react';
 var MAPBOX_TOKEN = 'pk.eyJ1IjoiamFrZXJvYnNvbiIsImEiOiJjbGgwOXVteWkwNDFvM3BvMXNkY29zeWp1In0.IhZAYjeZbCnW-cW2s7I1gw'
 
 function MyMap(props) {
-  const [viewState, setViewState] = React.useState({
-    latitude: 37.8,
-    longitude: -122.4,
-    zoom: 10
-  });
 
-  const mapRef = useRef(null)
-
-
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      console.log("Latitude is :", position.coords.latitude);
-      console.log("Longitude is :", position.coords.longitude);
-      mapRef.current?.flyTo({ center: [position.coords.longitude, position.coords.latitude] })
+    const [viewState, setViewState] = React.useState({
+        latitude: 37.8,
+        longitude: -122.4,
+        zoom: 10
     });
-  }, [])
 
-  function handleMap(evt) {
-    console.log(props)
+    const mapRef = useRef(null)
 
-    setViewState(evt.viewState)
-    if (!props.viewMap) {
-      props.updateLatLong(evt.viewState.latitude, evt.viewState.longitude)
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            console.log("Latitude is :", position.coords.latitude);
+            console.log("Longitude is :", position.coords.longitude);
+            mapRef.current?.flyTo({ center: [position.coords.longitude, position.coords.latitude] })
+        });
+    }, [])
+
+    function handleMap(evt) {
+        console.log(props)
+
+        setViewState(evt.viewState)
+        if (!props.viewMap) {
+            props.updateLatLong(evt.viewState.latitude, evt.viewState.longitude)
+        }
     }
-  }
 
-  return (
-    <>
-      <Map
-        {...viewState}
-        onMove={evt => handleMap(evt)}
-        style={{ width: "100%", height: 400 }}
-        mapStyle="mapbox://styles/mapbox/light-v9"
-        ref={mapRef}
-        mapboxAccessToken={MAPBOX_TOKEN}
-      >
-      {
-        !props.viewMap? 
-        <Marker
-          draggable={false}
-          latitude={viewState.latitude}
-          longitude={viewState.longitude}
-        ></Marker>
-      :(
-        props?.markers?.map((marker, index) => (
-          <Marker
-            key={index}
-            latitude={marker.latitude}
-            longitude={marker.longitude}
-            draggable={false}
-          />
-        ))
-      )
-      }
-        
 
-      
+    return (
+        <>
+            <Map
+                {...viewState}
+                onMove={evt => handleMap(evt)}
+                style={{ width: "100%", height: 400 }}
+                mapStyle="mapbox://styles/mapbox/light-v9"
+                ref={mapRef}
+                mapboxAccessToken={MAPBOX_TOKEN}
 
-        <GeolocateControl></GeolocateControl>
-        <NavigationControl></NavigationControl>
-        {/* <GeocoderControl mapboxAccessToken={{MAPBOX_TOKEN}} position='top-right'/> */}
-      </Map>
-    </>
+            >
+                {
+                    !props.viewMap ?
+                        <Marker
+                            draggable={false}
+                            latitude={viewState.latitude}
+                            longitude={viewState.longitude}
 
-  );
+                        ></Marker>
+                        : (
+                            props?.markers?.map((marker, index) => (
+                                <Marker
+                                    key={index}
+                                    latitude={marker.latitude}
+                                    longitude={marker.longitude}
+                                    draggable={false}
+                                    onClick={e => {
+                                        e.originalEvent.stopPropagation();
+                                        mapRef.current?.flyTo({ center: [marker.longitude, marker.latitude] })
+                                        props.handleSelectedMarker(marker)
+                                    }}
+                                />
+                            ))
+                        )
+                }
+
+
+
+
+                <GeolocateControl></GeolocateControl>
+                <NavigationControl></NavigationControl>
+                {/* <GeocoderControl mapboxAccessToken={{MAPBOX_TOKEN}} position='top-right'/> */}
+            </Map>
+        </>
+
+    );
 }
 
 export default MyMap;
