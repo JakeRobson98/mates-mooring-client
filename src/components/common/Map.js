@@ -17,21 +17,22 @@ function MyMap(props) {
 
     const mapRef = useRef(null)
 
+    const markerRef = useRef(null)
+
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(function (position) {
-            console.log("Latitude is :", position.coords.latitude);
-            console.log("Longitude is :", position.coords.longitude);
             mapRef.current?.flyTo({ center: [position.coords.longitude, position.coords.latitude] })
         });
     }, [])
 
     function handleMap(evt) {
-        console.log(props)
-
         setViewState(evt.viewState)
         if (!props.viewMap) {
-            props.updateLatLong(evt.viewState.latitude, evt.viewState.longitude)
+          var layers = mapRef.current?.getMap().queryRenderedFeatures(mapRef.current.project([evt.viewState.longitude, evt.viewState.latitude]))
+          var inWater = layers.some(e=>e.layer.id === 'water')
+          // console.log(inWater)
+          props.updateLatLong(evt.viewState.latitude, evt.viewState.longitude, inWater)
         }
     }
 
@@ -45,7 +46,7 @@ function MyMap(props) {
                 mapStyle="mapbox://styles/mapbox/light-v9"
                 ref={mapRef}
                 mapboxAccessToken={MAPBOX_TOKEN}
-
+                
             >
                 {
                     !props.viewMap ?
@@ -53,7 +54,7 @@ function MyMap(props) {
                             draggable={false}
                             latitude={viewState.latitude}
                             longitude={viewState.longitude}
-
+                            ref={markerRef}
                         ></Marker>
                         : (
                             props?.markers?.map((marker, index) => (
@@ -63,9 +64,9 @@ function MyMap(props) {
                                     longitude={marker.longitude}
                                     draggable={false}
                                     onClick={e => {
-                                        e.originalEvent.stopPropagation();
-                                        mapRef.current?.flyTo({ center: [marker.longitude, marker.latitude] })
-                                        props.handleSelectedMarker(marker)
+                                      e.originalEvent.stopPropagation();
+                                      mapRef.current?.flyTo({ center: [marker.longitude, marker.latitude] })
+                                      props.handleSelectedMarker(marker)
                                     }}
                                 />
                             ))

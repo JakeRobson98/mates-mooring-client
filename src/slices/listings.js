@@ -1,6 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import ListingService from '../services/listing.service'
+
+const isSea = require('is-sea');
+//import * as isSea from 'is-sea';
+
 export const getAllListings = createAsyncThunk(
     "listings/getListings",
     async (thunkAPI) => {
@@ -25,17 +29,22 @@ export const newListing = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       console.log(data)
-      const response = await ListingService.newListing(data)
-      return response;
+      if(data.inWater){
+        const response = await ListingService.newListing(data)
+        return response;
+      }else{
+        throw new Error("Please pick a location in the ocean")
+      }
+    
     } catch (error) {
       const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue();
+      (error.response &&
+        error.response.data &&
+        error.response.data.message) ||
+      error.message ||
+      error.toString();
+    thunkAPI.dispatch(setMessage(message));
+    return thunkAPI.rejectWithValue();
     }
   }
 );
@@ -50,8 +59,6 @@ const listingsSlice = createSlice({
     initialState,
     extraReducers: {
       [getAllListings.fulfilled]: (state, action) => {
-        console.log("calling")
-        console.log(action.payload)
         state.listings = action.payload.data;
       },
       [getAllListings.rejected]: (state, action) => {

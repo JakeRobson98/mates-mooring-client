@@ -14,6 +14,8 @@ const Home = () => {
 
   const [longitude, setlongitude] = useState(0)
   const [latitude, setlatitude] = useState(0)
+  const [inWater, setInWater] = useState(false)
+  const { message } = useSelector((state) => state.message);
 
   useEffect(() => {
     dispatch(clearMessage());
@@ -26,18 +28,23 @@ const Home = () => {
 
   const handleSubmit = (formValue) => {
     const { title, price } = formValue;
-    dispatch(newListing({ title, price, latitude, longitude }))
+    console.log(inWater)
+    dispatch(newListing({ title, price, latitude, longitude, inWater}))
       .unwrap()
-      .then(navigate("/home"))
+      .then(() => {
+        navigate("/home");
+        dispatch(clearMessage());
+      })
       .catch((e) => {
         console.log(e)
       });
   };
 
-  function updateLatLong (latitude, longitude){
-    console.log(latitude)
+  function updateLatLong (latitude, longitude, inWater){
+    console.log(inWater)
     setlatitude(latitude)
     setlongitude(longitude)
+    setInWater(inWater)
   }
 
   const validationSchema = Yup.object().shape({
@@ -68,7 +75,7 @@ const Home = () => {
           <Form>
               <div>
               <div className="form-group">
-                  <MyMap updateLatLong={(lat, long) => updateLatLong(lat, long)} viewMap={false}></MyMap>
+                  <MyMap updateLatLong={(lat, long, inWater) => updateLatLong(lat, long, inWater)} viewMap={false}></MyMap>
                 </div>
                 <div className="form-group">
                   <label htmlFor="title">Title</label>
@@ -99,6 +106,13 @@ const Home = () => {
           </Form>
         </Formik>
       </header>
+      {message && (
+        <div className="form-group">
+          <div className="alert alert-danger" role="alert">
+            {message}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

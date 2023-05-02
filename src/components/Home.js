@@ -14,7 +14,7 @@ const Home = () => {
     dispatch(getAllListings())
   }, [dispatch]);
 
-  const [selectedMarker, setSelectedMarker] = React.useState(null)
+  const [selectedMarker, setSelectedMarker] = React.useState([])
 
   const handleSelectedMakrer = (mooring) =>{
     setSelectedMarker(mooring)

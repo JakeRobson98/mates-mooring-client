@@ -12,15 +12,16 @@ const MyTable = ({ data }) => {
         </tr>
       </thead>
       <tbody>
-        {data.map(({ id, title, user, longitude, latitude, price }) => (
+        
+        {data.length !== 0 ? data?.map(({ id, title, user, longitude, latitude, price }) => (
           <tr key={id}>
-            <td>{user.name}</td>
+            <td>{user?.name}</td>
             <td>{title}</td>
             <td>{price}</td>
             <td>{latitude}</td>
             <td>{longitude}</td>
           </tr>
-        ))}
+        )):<></>}
       </tbody>
     </table>
   );
