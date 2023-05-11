@@ -1,5 +1,5 @@
 import React from 'react';
-const MyTable = ({ data }) => {
+const MooringTable = ({ data }) => {
   return (
     <table className='table'>
       <thead>
@@ -13,9 +13,9 @@ const MyTable = ({ data }) => {
       </thead>
       <tbody>
         
-        {data.length !== 0 ? data?.map(({ id, title, user, longitude, latitude, price }) => (
+        {data.length !== 0 ? data?.map(({ id, title, owner, longitude, latitude, price }) => (
           <tr key={id}>
-            <td>{user?.name}</td>
+            <td>{owner?.name}</td>
             <td>{title}</td>
             <td>{price}</td>
             <td>{latitude}</td>
@@ -27,4 +27,4 @@ const MyTable = ({ data }) => {
   );
 };
 
-export default MyTable;
+export default MooringTable;

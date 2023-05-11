@@ -10,8 +10,8 @@ var MAPBOX_TOKEN = 'pk.eyJ1IjoiamFrZXJvYnNvbiIsImEiOiJjbGgwOXVteWkwNDFvM3BvMXNkY
 function MyMap(props) {
 
     const [viewState, setViewState] = React.useState({
-        latitude: 37.8,
-        longitude: -122.4,
+        latitude: -33.83,
+        longitude: 151.27,
         zoom: 10
     });
 

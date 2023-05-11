@@ -2,9 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import ListingService from '../services/listing.service'
 
-const isSea = require('is-sea');
-//import * as isSea from 'is-sea';
-
 export const getAllListings = createAsyncThunk(
     "listings/getListings",
     async (thunkAPI) => {
@@ -37,6 +34,7 @@ export const newListing = createAsyncThunk(
       }
     
     } catch (error) {
+      console.log(error)
       const message =
       (error.response &&
         error.response.data &&
@@ -48,6 +46,8 @@ export const newListing = createAsyncThunk(
     }
   }
 );
+
+
 
 const initialState ={
     listings : [],

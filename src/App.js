@@ -26,7 +26,7 @@ const App = () => {
   return (
     <Router>
       <Navbar></Navbar>
-        <div className="container mt-3">
+        <div className="container-xl mt-3">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
