@@ -91,10 +91,12 @@ const Home = () => {
   return (
     <div class="container-xxl">
       <div class="row">
+        <div class="col-6">
 
           {selectedMarker == undefined? <></> : <MooringTable data={[selectedMarker]}></MooringTable>}
 
           <MyMap viewMap={true} markers={listings} handleSelectedMarker={handleSelectedMakrer} selectedMarker={selectedMarker}></MyMap>
+        </div>
         <div class="col">
           {selectedMarker == undefined ? <></> : <>
             <BookingTable data={selectedMarker?.bookings}></BookingTable>
